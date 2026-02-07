@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+   workspace:
+      # Usar imagen oficial de PHP DevContainers
+      image: mcr.microsoft.com/devcontainers/php:1-8.2
+
+      volumes:
+         - ..:/workspace:cached
+         - ~/.ssh:/home/vscode/.ssh:ro
+
+      command: sleep infinity
+
+      environment:
+         - DB_CONNECTION=pgsql
+         - DB_HOST=postgres
+         - DB_PORT=5432
+         - DB_DATABASE=lbcdev_maps
+         - DB_USERNAME=lbcdev
+         - DB_PASSWORD=secret
+         - REDIS_HOST=redis
+         - REDIS_PORT=6379
+
+      networks:
+         - lbcdev-maps
+
+      depends_on:
+         - postgres
+         - redis
+
+   postgres:
+      image: postgres:15-alpine
+      restart: unless-stopped
+
+      environment:
+         POSTGRES_DB: lbcdev_maps
+         POSTGRES_USER: lbcdev
+         POSTGRES_PASSWORD: secret
+
+      volumes:
+         - postgres-data:/var/lib/postgresql/data
+
+      networks:
+         - lbcdev-maps
+
+      ports:
+         - "5432:5432"
+
+   redis:
+      image: redis:7-alpine
+      restart: unless-stopped
+
+      volumes:
+         - redis-data:/data
+
+      networks:
+         - lbcdev-maps
+
+      ports:
+         - "6370:6379"
+
+volumes:
+   postgres-data:
+   redis-data:
+
+networks:
+   lbcdev-maps:
+      driver: bridge

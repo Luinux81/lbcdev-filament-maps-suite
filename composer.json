@@ -1,0 +1,66 @@
+{
+    "name": "lbcdev/filament-maps-suite",
+    "description": "Complete maps solution for FilamentPHP - Fields, Widgets, and Geometries",
+    "keywords": [
+        "laravel",
+        "livewire",
+        "filament",
+        "maps",
+        "leaflet",
+        "filamentphp",
+        "lbcdev"
+    ],
+    "type": "metapackage",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luinux81",
+            "email": "luinux81@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1|^8.2|^8.3"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0|^11.0",
+        "pestphp/pest": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lbcdev\\FilamentMapsSuite\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lbcdev\\FilamentMapsSuite\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test:packages": [
+            "@php -r \"echo '\\n🧪 Testing Core Package...\\n';\"",
+            "cd packages/core && composer test",
+            "@php -r \"echo '\\n🧪 Testing Geometries Package...\\n';\"",
+            "cd packages/geometries && composer test",
+            "@php -r \"echo '\\n🧪 Testing Fields Package...\\n';\"",
+            "cd packages/fields && composer test"
+        ],
+        "post-autoload-dump": [
+            "@php -r \"echo '\\n✅ Autoload dump completed\\n';\""
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

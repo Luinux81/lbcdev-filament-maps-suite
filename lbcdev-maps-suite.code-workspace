@@ -1,0 +1,86 @@
+{
+  "folders": [
+    {
+      "name": "🏗️ SUITE (Principal)",
+      "path": "."
+    },
+    {
+      "name": "📦 Core",
+      "path": "packages/core"
+    },
+    {
+      "name": "🗺️ Geometries",
+      "path": "packages/geometries"
+    },
+    {
+      "name": "📝 Fields",
+      "path": "packages/fields"
+    },
+    {
+      "name": "📊 Widgets",
+      "path": "packages/widgets"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/vendor": true,
+      "**/node_modules": true,
+      "**/.git": false
+    },
+    "search.exclude": {
+      "**/vendor": true,
+      "**/node_modules": true
+    },
+    "phpunit.paths": {
+      "${workspaceFolder:Core}/vendor/bin/phpunit": "packages/core",
+      "${workspaceFolder:Geometries}/vendor/bin/phpunit": "packages/geometries",
+      "${workspaceFolder:Fields}/vendor/bin/phpunit": "packages/fields",
+      "${workspaceFolder:Widgets}/vendor/bin/phpunit": "packages/widgets"
+    },
+    "intelephense.environment.includePaths": [
+      "packages/core/src",
+      "packages/geometries/src",
+      "packages/fields/src",
+      "packages/widgets/src"
+    ],
+    "[php]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "bmewburn.vscode-intelephense-client",
+      "mrmlnc.vscode-blade",
+      "onecentlin.laravel-blade",
+      "amiralizadeh9480.laravel-extra-intellisense",
+      "ms-azuretools.vscode-docker",
+      "ms-vscode-remote.remote-containers",
+      "eamodio.gitlens",
+      "editorconfig.editorconfig"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Listen for Xdebug (Core)",
+        "type": "php",
+        "request": "launch",
+        "port": 9003,
+        "pathMappings": {
+          "/workspace/packages/core": "${workspaceFolder:Core}"
+        }
+      },
+      {
+        "name": "Listen for Xdebug (Fields)",
+        "type": "php",
+        "request": "launch",
+        "port": 9003,
+        "pathMappings": {
+          "/workspace/packages/fields": "${workspaceFolder:Fields}"
+        }
+      }
+    ]
+  }
+}
