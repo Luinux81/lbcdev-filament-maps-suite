@@ -38,10 +38,10 @@
       "${workspaceFolder:Widgets}/vendor/bin/phpunit": "packages/widgets"
     },
     "intelephense.environment.includePaths": [
-      "packages/core/src",
-      "packages/geometries/src",
-      "packages/fields/src",
-      "packages/widgets/src"
+      "packages/core/vendor",
+      "packages/geometries/vendor",
+      "packages/fields/vendor",
+      "packages/widgets/vendor"
     ],
     "[php]": {
       "editor.formatOnSave": true,
