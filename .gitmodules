@@ -1,0 +1,9 @@
+[submodule "packages/core"]
+	path = packages/core
+	url = git@github.com:Luinux81/livewire-maps-core.git
+[submodule "packages/geometries"]
+	path = packages/geometries
+	url = git@github.com:Luinux81/map-geometries.git
+[submodule "packages/widgets"]
+	path = packages/widgets
+	url = git@github.com:Luinux81/filament-maps-widgets.git
