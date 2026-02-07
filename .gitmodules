@@ -7,3 +7,6 @@
 [submodule "packages/widgets"]
 	path = packages/widgets
 	url = git@github.com:Luinux81/filament-maps-widgets.git
+[submodule "packages/fields"]
+	path = packages/fields
+	url = git@github.com:Luinux81/filament-maps-fields.git
