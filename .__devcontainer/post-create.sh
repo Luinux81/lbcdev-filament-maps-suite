@@ -2,49 +2,37 @@
 
 echo "🚀 Inicializando workspace..."
 
+# 1. Descargar el instalador de extensiones si no existe
+if [ ! -f "/usr/local/bin/install-php-extensions" ]; then
+    echo "📥 Descargando instalador de extensiones PHP..."
+    sudo curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions
+    sudo chmod +x /usr/local/bin/install-php-extensions
+fi
+
 # Instalar extensiones PHP manualmente
 echo "📦 Instalando extensiones PHP..."
 
-# Instalar dependencias del sistema necesarias para compilar extensiones
-echo "  → Instalando dependencias del sistema..."
-export DEBIAN_FRONTEND=noninteractive
-sudo apt-get update -qq > /dev/null 2>&1
-sudo apt-get install -y -qq \
-    libpq-dev \
-    libzip-dev \
-    libpng-dev \
-    libicu-dev \
-    libzstd-dev \
-    liblz4-dev \
-    > /dev/null 2>&1
+# 2. Instalar extensiones con el instalador (gestiona dependencias de sistema por ti)
+echo "📦 Instalando extensiones PHP (intl, zip, gd, bcmath, pdo_pgsql, pgsql, redis, xdebug)..."
+# Este comando es atómico: instala, configura y habilita.
+sudo install-php-extensions intl zip gd bcmath pdo_pgsql pgsql redis xdebug 
 
-# Instalar extensiones PHP usando docker-php-ext-install
-echo "  → Instalando pdo_pgsql, pgsql..."
-sudo docker-php-ext-install -j$(nproc) pdo_pgsql pgsql > /dev/null 2>&1
+echo "🔍 DEBUG: ¿Dónde están los archivos .ini?"
+ls -l /usr/local/etc/php/conf.d/
 
-echo "  → Instalando zip, gd, intl, bcmath..."
-sudo docker-php-ext-install -j$(nproc) zip gd intl bcmath > /dev/null 2>&1
+echo "🔍 DEBUG: ¿Qué archivos está cargando PHP realmente?"
+php --ini
 
-# Instalar Redis via PECL - Responder "no" a todas las opciones excepto usar liblz4 del sistema
-echo "  → Instalando redis via PECL..."
-# Opciones de redis:
-# enable igbinary serializer support? [no] : no
-# enable lzf compression support? [no] : no
-# enable zstd compression support? [no] : no
-# enable msgpack serializer support? [no] : no
-# enable lz4 compression? [no] : no
-# use system liblz4? [yes] : yes (por defecto)
-yes '' | sudo pecl install redis > /dev/null 2>&1 || true
-sudo docker-php-ext-enable redis 2>/dev/null || true
+echo "🔍 Verificando extensiones instaladas:"
+# Si alguna de estas falla, el script se detendrá aquí por el 'set -e'
+php -m | grep -E "intl|zip|gd|pdo_pgsql|redis"
 
-# Instalar Xdebug via PECL (no tiene prompts)
-echo "  → Instalando xdebug via PECL..."
-sudo pecl install xdebug > /dev/null 2>&1 || true
-sudo docker-php-ext-enable xdebug 2>/dev/null || true
+# Si llegamos aquí, las extensiones están vivas.
+echo "✅ Verificación exitosa"
 
 echo "✅ Extensiones PHP instaladas"
 
-# Configurar Xdebug
+# 3. Configurar Xdebug
 echo "🐛 Configurando Xdebug..."
 sudo bash -c 'cat > /usr/local/etc/php/conf.d/xdebug.ini << EOF
 xdebug.mode=debug
@@ -53,6 +41,10 @@ xdebug.client_host=host.docker.internal
 xdebug.client_port=9003
 zend_extension=xdebug.so
 EOF'
+
+# 4. Forzar refresco de la configuración para Composer
+# A veces el socket de PHP queda en caché durante el post-create
+# export PHP_INI_SCAN_DIR=:/usr/local/etc/php/conf.d
 
 # Verificar extensiones instaladas
 echo "🔍 Verificando extensiones instaladas:"
@@ -64,6 +56,8 @@ done
 echo ""
 echo "📋 Información de PHP:"
 php -v | head -n 1
+
+read -p "Press enter to continue"
 
 # Instalar Composer globalmente si no existe
 if ! command -v composer &> /dev/null; then

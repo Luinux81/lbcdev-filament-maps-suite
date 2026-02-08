@@ -1,68 +1,93 @@
-version: "3.8"
+version: '3.8'
 
 services:
-   workspace:
-      # Usar imagen oficial de PHP DevContainers
-      image: mcr.microsoft.com/devcontainers/php:1-8.2
+    # ----------------------------------------
+    # SERVICIO PHP-FPM
+    # ----------------------------------------
+    php:
+        # Eliminamos container_name para permitir multi-proyecto
+        build:
+            context: .
+            dockerfile: php/Dockerfile
+        volumes:
+            - ..:/workspace
+        working_dir: /workspace
+        networks:
+            - app_network
+        environment:
+            # serverName dinámico para XDebug
+            - PHP_IDE_CONFIG=serverName=${PROJECT_NAME:-laravel-app}
+            # Variables de entorno para Xdebug
+            - XDEBUG_MODE=debug
+        depends_on:
+            - mysql
+            - redis
+        restart: unless-stopped
 
-      volumes:
-         - ..:/workspace:cached
-         - ~/.ssh:/home/vscode/.ssh:ro
+    # ----------------------------------------
+    # SERVICIO NGINX
+    # ----------------------------------------
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        volumes:
+            - ..:/workspace:ro
+        ports:
+            - '8080:80'
+        networks:
+            - app_network
+        depends_on:
+            - php
+        restart: unless-stopped
 
-      command: sleep infinity
+    # ----------------------------------------
+    # SERVICIO DE BASE DE DATOS MYSQL
+    # ----------------------------------------
+    mysql:
+        image: mysql:8.0
+        volumes:
+            - mysql_data:/var/lib/mysql
+            - ./mysql/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
+        environment:
+            # Usamos variables con valores por defecto
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_DATABASE: ${DB_DATABASE:-laravel_db}
+            MYSQL_USER: ${DB_USER:-dev}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-dev}
+        ports:
+            - '3307:3306'
+        networks:
+            - app_network
+        # Mantenemos esto para compatibilidad con clientes DB antiguos
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
 
-      environment:
-         - DB_CONNECTION=pgsql
-         - DB_HOST=postgres
-         - DB_PORT=5432
-         - DB_DATABASE=lbcdev_maps
-         - DB_USERNAME=lbcdev
-         - DB_PASSWORD=secret
-         - REDIS_HOST=redis
-         - REDIS_PORT=6379
-
-      networks:
-         - lbcdev-maps
-
-      depends_on:
-         - postgres
-         - redis
-
-   postgres:
-      image: postgres:15-alpine
-      restart: unless-stopped
-
-      environment:
-         POSTGRES_DB: lbcdev_maps
-         POSTGRES_USER: lbcdev
-         POSTGRES_PASSWORD: secret
-
-      volumes:
-         - postgres-data:/var/lib/postgresql/data
-
-      networks:
-         - lbcdev-maps
-
-      ports:
-         - "5432:5432"
-
-   redis:
-      image: redis:7-alpine
-      restart: unless-stopped
-
-      volumes:
-         - redis-data:/data
-
-      networks:
-         - lbcdev-maps
-
-      ports:
-         - "6370:6379"
+    # ----------------------------------------
+    # SERVICIO REDIS (Cache y Colas)
+    # ----------------------------------------
+    redis:
+        image: redis:7-alpine
+        ports:
+            - '6379:6379'
+        volumes:
+            - redis_data:/data
+        networks:
+            - app_network
+        command: redis-server --appendonly yes
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
 
 volumes:
-   postgres-data:
-   redis-data:
+    mysql_data:
+        driver: local
+    redis_data:
+        driver: local
 
 networks:
-   lbcdev-maps:
-      driver: bridge
+    app_network:
+        driver: bridge

@@ -1,59 +1,91 @@
+// ========================================================================================
+// FILOSOFÍA DE LA PLANTILLA:
+// 1. APP COMPLETA: El código vive en /webapp. No hay composer.json en la raíz.
+// 2. PAQUETE: El código del paquete vive en la raíz (con su composer.json).
+//    Puede coexistir con una carpeta /webapp que sirve de "Testbench" o sandbox.
+// 3. ENTORNO: PHP 8.3, Node 22, Nginx, MySQL y Redis.
+// ========================================================================================
 {
-  "name": "LBCDev Maps Suite Development",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "workspace",
-  "workspaceFolder": "/workspace",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "mrmlnc.vscode-blade",
-        "onecentlin.laravel-blade",
-        "amiralizadeh9480.laravel-extra-intellisense",
-        "eamodio.gitlens",
-        "ms-azuretools.vscode-docker",
-        "editorconfig.editorconfig",
-        "xdebug.php-debug",
-        "Augment.vscode-augment",
-        "yzhang.markdown-all-in-one",
-        "shd101wyy.markdown-preview-enhanced"
-      ],
-      "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "php.suggest.basic": false,
-        "intelephense.environment.phpVersion": "8.2.0",
-        "intelephense.files.maxSize": 5000000,
-        "[php]": {
-          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
-          "editor.formatOnSave": true
+    "name": "LBCDev Maps Suite Development",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "php",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+    "overrideCommand": false,
+    
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "22"
         }
-      }
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "18"
-    }
-  },
-  "forwardPorts": [
-    8000,
-    5432,
-    6370,
-    8080
-  ],
-  "portsAttributes": {
-    "8000": {
-      "label": "Laravel App",
-      "onAutoForward": "notify"
     },
-    "8080": {
-      "label": "Docs (VitePress)",
-      "onAutoForward": "openBrowser"
-    }
-  },
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "postStartCommand": "bash .devcontainer/post-start.sh",
-  "remoteUser": "vscode"
+
+    "mounts": [
+        "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind,consistency=cached"
+    ],
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // --- CORE PHP & LARAVEL ---
+                "bmewburn.vscode-intelephense-client",      // Motor de inteligencia PHP
+                "xdebug.php-debug",                         // Depuración (puerto 9003)
+                "mrmlnc.vscode-blade",                      // Soporte Blade
+                "onecentlin.laravel-blade",                 // Snippets Blade
+                "amiralizadeh9480.laravel-extra-intellisense", // Inteligencia extra Laravel
+                "MehediDracula.php-namespace-resolver",     // Resolver Namespaces automáticamente
+
+                // --- CALIDAD, GIT & TESTING ---
+                "eamodio.gitlens",                          // Superpoderes para Git
+                "editorconfig.editorconfig",                // Consistencia de formato
+                "mikestead.dotenv",                         // Soporte para .env
+                "ms-azuretools.vscode-docker",              // Gestión de Docker
+                "betterphpit.better-phpunit",               // Ejecución de tests (Crucial para paquetes)
+
+                // --- DOCUMENTACIÓN Y DIAGRAMAS ---
+                "yzhang.markdown-all-in-one",               // Markdown avanzado
+                "shd101wyy.markdown-preview-enhanced",      // Previsualización avanzada
+                "DavidAnson.vscode-markdownlint",           // Linter para Markdown
+                "hediet.vscode-drawio",                     // Diagramas .drawio
+                "nopeslide.vscode-drawio-plugin-mermaid",   // Soporte Mermaid
+
+                // --- IA & UTILIDADES ---
+                "Augment.vscode-augment",                   // Asistente Augment
+                "yy0931.vscode-sqlite3-editor"              // Editor SQLite3
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "php.suggest.basic": false,
+                "intelephense.environment.phpVersion": "8.3.0",
+                "intelephense.environment.includePaths": [
+                    "/workspace/webapp/vendor",
+                    "/workspace/vendor"
+                ],
+                "[php]": {
+                    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+                    "editor.formatOnSave": true
+                }
+            }
+        }
+    },
+
+    "forwardPorts": [3307, 5173, 6379, 8080, 9003],
+    "portsAttributes": {        
+        "3307": { "label": "MySQL (Host Port)", "onAutoForward": "ignore" },
+        "5173": { "label": "Vite Dev Server", "onAutoForward": "ignore" },
+        "6379": { "label": "Redis (Host Port)", "onAutoForward": "ignore" },
+        "8080": { "label": "Web Server (Nginx)", "onAutoForward": "openBrowser" },
+        "9003": { "label": "Xdebug (PHP)", "onAutoForward": "ignore" }        
+    },
+
+    // --- LÓGICA DE DETECCIÓN AUTOMÁTICA ---
+    "postCreateCommand": "bash .devcontainer/php/scripts/setup-env.sh",
+    
+    "postStartCommand": "echo '✅ Entorno listo (PHP 8.3 / Node 22). Estructura detectada y procesada.'",
+    
+    "remoteUser": "dev"
 }
