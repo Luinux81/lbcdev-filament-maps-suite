@@ -37,3 +37,13 @@ if [ "$MODE" == "off" ]; then
 else
     echo -e "${YELLOW}⚠️  Modo $MODE activo (el rendimiento puede verse afectado).${NC}"
 fi
+
+# 3. Forzar el modo para PHP-FPM
+# Creamos un pequeño archivo .ini que sobreescribe el modo
+echo "xdebug.mode=$MODE" | sudo tee /usr/local/etc/php/conf.d/z-xdebug-mode.ini > /dev/null
+
+# 4. Reiniciar PHP-FPM para aplicar cambios al servidor web
+sudo killall -o 1s php-fpm # Esto fuerza un recargo suave en Alpine
+# O si prefieres: sudo pkill -USR2 php-fpm
+
+echo -e "${GREEN}🔄 Servidor PHP-FPM actualizado y reiniciado.${NC}"

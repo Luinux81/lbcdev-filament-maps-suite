@@ -23,6 +23,11 @@ services:
             - mysql
             - redis
         restart: unless-stopped
+        ports:
+            # Necesario para que el vscode escuche las conexiones de xdebug no solo en 127.0.0.1, sino en todas las interfaces
+            - "0.0.0.0:9003:9003"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
 
     # ----------------------------------------
     # SERVICIO NGINX
@@ -76,7 +81,7 @@ services:
             - app_network
         command: redis-server --appendonly yes
         healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
+            test: [ "CMD", "redis-cli", "ping" ]
             interval: 10s
             timeout: 5s
             retries: 5

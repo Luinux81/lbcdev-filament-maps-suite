@@ -14,6 +14,7 @@ alias xdebug="xdebug debug"
 alias xcov="xdebug coverage"
 alias xstatus='php -i | grep "xdebug.mode"'
 
+
 # Laravel shortcuts
 alias art='php artisan'
 alias tinker='php artisan tinker'

@@ -66,12 +66,16 @@
             }
         }
     },
+    "remoteEnv": {
+        "XDEBUG_MODE": "debug",
+        "XDEBUG_CONFIG": "client_host=host.docker.internal client_port=9003"
+    },
     "forwardPorts": [
         3307,
         5173,
         6379,
-        8080,
-        9003
+        8080
+        // 9003 // El puerto se abre en el docker-compose.yml
     ],
     "portsAttributes": {
         "3307": {
@@ -89,11 +93,12 @@
         "8080": {
             "label": "Web Server (Nginx)",
             "onAutoForward": "openBrowser"
-        },
-        "9003": {
-            "label": "Xdebug (PHP)",
-            "onAutoForward": "ignore"
         }
+        // "9003": { //  No es compatible, si se pone vscode solo escucha conexiones de xdebug desde 127.0.0.1
+        //     "label": "Xdebug (PHP)",
+        //     "onAutoForward": "ignore",
+        //     "requireLocalPort": false
+        // }
     },
     // --- LÓGICA DE DETECCIÓN AUTOMÁTICA ---
     "postCreateCommand": "bash .devcontainer/php/scripts/setup-env.sh",

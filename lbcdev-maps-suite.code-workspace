@@ -46,7 +46,9 @@
     "[php]": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-    }
+    },
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "php.debug.listenOnAllInterfaces": true,
   },
   "extensions": {
     "recommendations": [
@@ -64,12 +66,21 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Listen for Xdebug (Suite)",
+        "type": "php",
+        "request": "launch",
+        "port": 9003,
+        "pathMappings": {
+          "/workspace": "${workspaceFolder:🏗️ SUITE (Principal)}"
+        },
+      },
+      {
         "name": "Listen for Xdebug (Core)",
         "type": "php",
         "request": "launch",
         "port": 9003,
         "pathMappings": {
-          "/workspace/packages/core": "${workspaceFolder:Core}"
+          "/workspace/packages/core": "${workspaceFolder:📦 Core}"
         }
       },
       {
@@ -78,7 +89,7 @@
         "request": "launch",
         "port": 9003,
         "pathMappings": {
-          "/workspace/packages/fields": "${workspaceFolder:Fields}"
+          "/workspace/packages/fields": "${workspaceFolder:📝 Fields}"
         }
       }
     ]
