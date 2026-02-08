@@ -40,6 +40,7 @@
                 "mikestead.dotenv", // Soporte para .env
                 "ms-azuretools.vscode-docker", // Gestión de Docker
                 "betterphpit.better-phpunit", // Ejecución de tests (Crucial para paquetes)
+                "open-southeners.laravel-pint", // Formateo de código Laravel
                 // --- DOCUMENTACIÓN Y DIAGRAMAS ---
                 "yzhang.markdown-all-in-one", // Markdown avanzado
                 "shd101wyy.markdown-preview-enhanced", // Previsualización avanzada
