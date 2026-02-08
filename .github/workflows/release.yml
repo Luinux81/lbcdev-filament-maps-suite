@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'v_desactivado_por_ahora*'
 
 jobs:
   release:
