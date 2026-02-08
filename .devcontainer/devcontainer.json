@@ -14,7 +14,6 @@
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
     "overrideCommand": false,
-    
     // "features": {
     //     "ghcr.io/devcontainers/features/git:1": {},
     //     "ghcr.io/devcontainers/features/github-cli:1": {},
@@ -22,39 +21,34 @@
     //         "version": "22"
     //     }
     // },
-
     "mounts": [
         "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind,consistency=cached"
     ],
-
     "customizations": {
         "vscode": {
             "extensions": [
                 // --- CORE PHP & LARAVEL ---
-                "bmewburn.vscode-intelephense-client",      // Motor de inteligencia PHP
-                "xdebug.php-debug",                         // Depuración (puerto 9003)
-                "mrmlnc.vscode-blade",                      // Soporte Blade
-                "onecentlin.laravel-blade",                 // Snippets Blade
+                "bmewburn.vscode-intelephense-client", // Motor de inteligencia PHP
+                "xdebug.php-debug", // Depuración (puerto 9003)
+                "mrmlnc.vscode-blade", // Soporte Blade
+                "onecentlin.laravel-blade", // Snippets Blade
                 "amiralizadeh9480.laravel-extra-intellisense", // Inteligencia extra Laravel
-                "MehediDracula.php-namespace-resolver",     // Resolver Namespaces automáticamente
-
+                "MehediDracula.php-namespace-resolver", // Resolver Namespaces automáticamente
                 // --- CALIDAD, GIT & TESTING ---
-                "eamodio.gitlens",                          // Superpoderes para Git
-                "editorconfig.editorconfig",                // Consistencia de formato
-                "mikestead.dotenv",                         // Soporte para .env
-                "ms-azuretools.vscode-docker",              // Gestión de Docker
-                "betterphpit.better-phpunit",               // Ejecución de tests (Crucial para paquetes)
-
+                "eamodio.gitlens", // Superpoderes para Git
+                "editorconfig.editorconfig", // Consistencia de formato
+                "mikestead.dotenv", // Soporte para .env
+                "ms-azuretools.vscode-docker", // Gestión de Docker
+                "betterphpit.better-phpunit", // Ejecución de tests (Crucial para paquetes)
                 // --- DOCUMENTACIÓN Y DIAGRAMAS ---
-                "yzhang.markdown-all-in-one",               // Markdown avanzado
-                "shd101wyy.markdown-preview-enhanced",      // Previsualización avanzada
-                "DavidAnson.vscode-markdownlint",           // Linter para Markdown
-                "hediet.vscode-drawio",                     // Diagramas .drawio
-                "nopeslide.vscode-drawio-plugin-mermaid",   // Soporte Mermaid
-
+                "yzhang.markdown-all-in-one", // Markdown avanzado
+                "shd101wyy.markdown-preview-enhanced", // Previsualización avanzada
+                "DavidAnson.vscode-markdownlint", // Linter para Markdown
+                "hediet.vscode-drawio", // Diagramas .drawio
+                "nopeslide.vscode-drawio-plugin-mermaid", // Soporte Mermaid
                 // --- IA & UTILIDADES ---
-                "Augment.vscode-augment",                   // Asistente Augment
-                "yy0931.vscode-sqlite3-editor"              // Editor SQLite3
+                "Augment.vscode-augment", // Asistente Augment
+                "yy0931.vscode-sqlite3-editor" // Editor SQLite3
             ],
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "bash",
@@ -72,20 +66,37 @@
             }
         }
     },
-
-    "forwardPorts": [3307, 5173, 6379, 8080, 9003],
-    "portsAttributes": {        
-        "3307": { "label": "MySQL (Host Port)", "onAutoForward": "ignore" },
-        "5173": { "label": "Vite Dev Server", "onAutoForward": "ignore" },
-        "6379": { "label": "Redis (Host Port)", "onAutoForward": "ignore" },
-        "8080": { "label": "Web Server (Nginx)", "onAutoForward": "openBrowser" },
-        "9003": { "label": "Xdebug (PHP)", "onAutoForward": "ignore" }        
+    "forwardPorts": [
+        3307,
+        5173,
+        6379,
+        8080,
+        9003
+    ],
+    "portsAttributes": {
+        "3307": {
+            "label": "MySQL (Host Port)",
+            "onAutoForward": "ignore"
+        },
+        "5173": {
+            "label": "Vite Dev Server",
+            "onAutoForward": "ignore"
+        },
+        "6379": {
+            "label": "Redis (Host Port)",
+            "onAutoForward": "ignore"
+        },
+        "8080": {
+            "label": "Web Server (Nginx)",
+            "onAutoForward": "openBrowser"
+        },
+        "9003": {
+            "label": "Xdebug (PHP)",
+            "onAutoForward": "ignore"
+        }
     },
-
     // --- LÓGICA DE DETECCIÓN AUTOMÁTICA ---
     "postCreateCommand": "bash .devcontainer/php/scripts/setup-env.sh",
-    
-    "postStartCommand": "echo '✅ Entorno listo (PHP 8.3 / Node 22). Estructura detectada y procesada.'",
-    
+    "postStartCommand": "echo '✅ Entorno listo (PHP 8.3 / Node 22)'",
     "remoteUser": "dev"
 }
