@@ -36,6 +36,7 @@
                 "MehediDracula.php-namespace-resolver", // Resolver Namespaces automáticamente
                 // --- CALIDAD, GIT & TESTING ---
                 "eamodio.gitlens", // Superpoderes para Git
+                "github.vscode-github-actions", // Soporte para GitHub Actions
                 "editorconfig.editorconfig", // Consistencia de formato
                 "mikestead.dotenv", // Soporte para .env
                 "ms-azuretools.vscode-docker", // Gestión de Docker
