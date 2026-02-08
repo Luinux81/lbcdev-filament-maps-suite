@@ -49,12 +49,7 @@ fi
 # 5. LÓGICA DE LABORATORIO (webapp)
 # Si no hay webapp, ni packages, ni carpeta src, creamos un Laravel fresco
 if [ ! -d "webapp" ] && [ ! -d "packages" ] && [ ! -d "src" ]; then
-    echo -e "${YELLOW}🏗️ Entorno vacío detectado. Creando laboratorio Laravel...${NC}"
-    composer create-project laravel/laravel webapp
-    echo -e "${GREEN}🔗 Vinculando paquete raíz al laboratorio...${NC}"
-    cd webapp
-    composer config repositories.local '{"type": "path", "url": "..", "options": {"symlink": true}}' --file composer.json
-    cd ..
+    /usr/local/bin/create-webapp
 fi
 
 # 6. CONFIGURACIÓN DE LA WEBAPP (Sea laboratorio o proyecto real)
@@ -83,6 +78,6 @@ if [ -d "webapp" ]; then
     cd ..
 fi
 
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}✅ ¡CONFORMADO! El entorno está listo para trabajar.${NC}"
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ Entorno de desarrollo configurado y listo.${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

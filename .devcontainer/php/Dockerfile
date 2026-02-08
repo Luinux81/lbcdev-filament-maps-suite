@@ -66,13 +66,15 @@ COPY php/config/php.ini /usr/local/etc/php/conf.d/custom.ini
 COPY php/config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # 7. Copiar scripts
-COPY php/scripts/fix-ssh-permissions.sh /usr/local/bin/fix-ssh-permissions.sh
-COPY php/scripts/setup-env.sh /usr/local/bin/setup-env.sh
+COPY php/scripts/fix-ssh-permissions.sh /usr/local/bin/fix-ssh-permissions
+COPY php/scripts/setup-env.sh /usr/local/bin/setup-env
+COPY php/scripts/create-webapp.sh /usr/local/bin/create-webapp
 COPY php/scripts/xdebug-control.sh /usr/local/bin/xdebug-control.sh
 COPY php/scripts/bash_aliases.sh /etc/profile.d/bash_aliases.sh
 
-RUN chmod +x /usr/local/bin/fix-ssh-permissions.sh \
-    && chmod +x /usr/local/bin/setup-env.sh \
+RUN chmod +x /usr/local/bin/fix-ssh-permissions \
+    && chmod +x /usr/local/bin/setup-env \
+    && chmod +x /usr/local/bin/create-webapp \
     && chmod +x /usr/local/bin/xdebug-control.sh \
     && chmod +x /etc/profile.d/bash_aliases.sh \
     && echo 'source /etc/profile.d/bash_aliases.sh' >> /home/dev/.bashrc
@@ -80,7 +82,7 @@ RUN chmod +x /usr/local/bin/fix-ssh-permissions.sh \
 # 8. Entrypoint mejorado
 RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh \
     && echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh \
-    && echo 'if [ "$(id -u)" = "1000" ]; then /usr/local/bin/fix-ssh-permissions.sh; fi' >> /usr/local/bin/docker-entrypoint.sh \
+    && echo 'if [ "$(id -u)" = "1000" ]; then /usr/local/bin/fix-ssh-permissions; fi' >> /usr/local/bin/docker-entrypoint.sh \
     && echo 'if [ "$#" -eq 0 ]; then exec php-fpm -F -R; else exec "$@"; fi' >> /usr/local/bin/docker-entrypoint.sh \
     && chmod +x /usr/local/bin/docker-entrypoint.sh
 

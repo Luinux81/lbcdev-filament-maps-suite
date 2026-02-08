@@ -24,3 +24,6 @@ alias fresh='php artisan migrate:fresh --seed'
 alias t='php artisan test'
 alias tf='php artisan test --filter'
 alias tc='php artisan test --coverage'
+
+# Crear webapp shortcut
+alias mk-webapp='/usr/local/bin/create-webapp'
