@@ -77,7 +77,14 @@ RUN chmod +x /usr/local/bin/fix-ssh-permissions \
     && chmod +x /usr/local/bin/create-webapp \
     && chmod +x /usr/local/bin/xdebug-control.sh \
     && chmod +x /etc/profile.d/bash_aliases.sh \
-    && echo 'source /etc/profile.d/bash_aliases.sh' >> /home/dev/.bashrc
+    # MANTENER ESTE COMENTARIO
+    # Esta parte es para que el usuario dev tenga permisos para editar el archivo .bashrc y ademas poder usar los scripts de xdebug-control.sh
+    && touch /home/dev/.bashrc \
+    && echo 'source /etc/profile.d/bash_aliases.sh' >> /home/dev/.bashrc \
+    && chown dev:dev /home/dev/.bashrc \
+    && touch /usr/local/etc/php/conf.d/zz-xdebug-runtime.ini \
+    && chown dev:dev /usr/local/etc/php/conf.d/zz-xdebug-runtime.ini \
+    && chmod 664 /usr/local/etc/php/conf.d/zz-xdebug-runtime.ini
 
 # 8. Entrypoint mejorado
 RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh \

@@ -1,19 +1,28 @@
 #!/bin/bash
 # Aliases útiles para el desarrollo
 
-# Función para cambiar Xdebug y aplicar cambios al instante
-xdebug() {
-    /usr/local/bin/xdebug-control.sh "$1"
-    # Aplicamos el cambio a la sesión actual inmediatamente
-    export XDEBUG_MODE="$1"
+# Función maestra para Xdebug
+# Usamos 'source' para que los 'export' del script afecten a esta terminal
+xdebug_change() {
+    if [ -f /usr/local/bin/xdebug-control.sh ]; then
+        # IMPORTANTE: Ejecutamos con 'source' para persistencia de variables
+        source /usr/local/bin/xdebug-control.sh "$1"
+        
+        # Sincronizamos la variable en la shell actual por si el script no lo hizo
+        export XDEBUG_MODE="$1"
+    else
+        echo "❌ Error: xdebug-control.sh no encontrado."
+    fi
 }
 
 # Xdebug shortcuts
-alias xoff="xdebug off"
-alias xdebug="xdebug debug"
-alias xcov="xdebug coverage"
-alias xstatus='php -i | grep "xdebug.mode"'
+# Redefinimos los alias para usar la nueva función
+alias xdebug='xdebug_change debug'
+alias xoff='xdebug_change off'
+alias xcov='xdebug_change coverage'
+alias xstatus='php -r "echo \"xdebug.mode => \" . ini_get(\"xdebug.mode\") . \"\n\";"'
 
+# --- Otros Aliases ---
 
 # Laravel shortcuts
 alias art='php artisan'
