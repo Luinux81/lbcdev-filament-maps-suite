@@ -1,30 +1,36 @@
-name: Tests
+name: CI Tests
 
 on:
   workflow_dispatch: # Permite ejecución manual
   push:
-    branches: [ main ]
+    branches: [ main ] # Solo se ejecuta cuando subes cambios a main
+
 jobs:
-  test:
+  phpunit-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
-          coverage: xdebug
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, sqlite3, pdo_sqlite
+          coverage: xdebug # Necesario para generar el informe de cobertura
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Execute tests
-        run: vendor/bin/phpunit --coverage-text
+      - name: Execute Tests
+        # Generamos la cobertura en formato HTML en una carpeta llamada 'coverage-report'
+        run: vendor/bin/phpunit --coverage-html coverage-report
 
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
+      - name: Upload Coverage Artifact
+        # Este paso guarda la carpeta del informe como un artefacto de GitHub
+        uses: actions/upload-artifact@v4
         with:
-          files: ./coverage.xml 
+          name: phpunit-coverage-report
+          path: coverage-report/
+          retention-days: 7 # Se borrará automáticamente después de 7 días
