@@ -15,8 +15,6 @@
 - ✅ Componente `LivewireMap` completamente implementado (243 líneas)
   - Soporte single marker y multi-marker (MarkerCollection)
   - Modo legacy (lat/lng) con retrocompatibilidad
-  - Métodos: `addMarker()`, `removeMarker()`, `clearMarkers()`
-  - Propiedades computadas: `markersData`, `hasCoordinates`
   - Validación de coordenadas y eventos Livewire
 - ✅ Tests unitarios completos (13 tests, 265 líneas)
   - Mount con marker/markers/legacy
@@ -42,14 +40,8 @@
 
 - ✅ Interfaces: `GeometryInterface`, `HasCoordinates`, `Renderable`
 - ✅ Clase `Marker` completamente implementada
-  - Implementa `Wireable` para Livewire
-  - Métodos fluent: `label()`, `tooltip()`, `icon()`, `iconColor()`, `options()`, `metadata()`
-  - Métodos: `toArray()`, `toJson()`, `render()`, `toLivewire()`, `fromLivewire()`
 - ✅ Tests unitarios `Marker` (19 tests, 156 líneas)
 - ✅ Clase `MarkerCollection` completamente implementada
-  - Implementa `Countable`, `Iterator`, `ArrayAccess`, `Wireable`
-  - Métodos: `add()`, `get()`, `remove()`, `clear()`, `all()`, `isEmpty()`
-  - Métodos: `toArray()`, `toJson()`, `render()`
 - ✅ Tests unitarios `MarkerCollection` (17 tests, 227 líneas)
 
 ### Paquete Fields (`filament-maps-fields`)
