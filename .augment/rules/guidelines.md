@@ -18,11 +18,13 @@ type: "always_apply"
     - 5. Explica brevemente el paso actual, a ser posible 1 o 2 parrafos como máximo y repite el proceso anterior (explicar, pedir confirmacion, ejecutar paso, pedir confirmación para crear y de nuevo para ejecutar los test, que deben probar el paso actual y los anteriores pasos).
     - 6. Continuar repitiendo el mismo sistema para todos los pasos hasta completar el plan.
 
-# Particulares de este proyecto
+## Particulares de este proyecto
+
+### Documentación
 
 - Consulta y manten en tu contexto los archivos del directorio /docs
 - El archivo /docs/00-ESTADO_ACTUAL.md contiene un resumen ejecutivo del estado actual del proyecto y hace las funciones de índice.
-- Los archivos de arquitectura propuesta y checklist progreso son un work in progress, y deben ir siendo pulidos poco a poco.
+- Los archivos de arquitectura propuesta y checklist progreso son un work in progress, y deben ir siendo pulidos poco a poco, hay partes válidas que se mantienen y otras que no, siempre pide confirmación al usuario sobre la información que extraes de ahi.
 - Los archivos del directorio /docs deben ser actualizados con los cambios realizados y deben mantenerse actualizados, pero siempre debes pedir confirmación primero explicando que vas a añadir, cambiar o eliminar.
 - El archivo de estado actual se actualiza si hay nuevos repos, paquetes o archivos de documentacion
 - El archivo de checklist progreso se actualiza cuando se cumple una nueva tarea (seccion completados), cuando se decide una funcionalidad que se implementará en el futuro (seccion por hacer o proximo paso) o cuando se decide trabajar en una funcionalidad (en progreso, proximo paso).
