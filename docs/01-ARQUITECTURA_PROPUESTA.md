@@ -191,58 +191,6 @@ lbcdev-filament-maps-suite/
 └── lbcdev-maps-suite.code-workspace  # VS Code Workspace
 ```
 
-### Submodule Ejemplo: livewire-maps-core
-
-```shell
-livewire-maps-core/                # Repo independiente en GitHub
-│
-├── .github/
-│   └── workflows/
-│       └── tests.yml
-│
-├── resources/
-│   ├── views/
-│   │   └── livewire/
-│   │       ├── map.blade.php
-│   │       └── map-multi-marker.blade.php
-│   └── js/
-│       ├── map-core.js
-│       └── marker-manager.js
-│
-├── src/
-│   ├── Components/
-│   │   ├── LivewireMap.php
-│   │   └── LivewireMultiMarkerMap.php
-│   ├── Concerns/
-│   │   ├── HasMarkers.php
-│   │   ├── HasEvents.php
-│   │   └── HasTileProviders.php
-│   ├── Contracts/
-│   │   └── MapComponentInterface.php
-│   ├── Facades/
-│   │   └── LivewireMap.php
-│   ├── LivewireMapsServiceProvider.php
-│   └── helpers.php
-│
-├── tests/
-│   ├── Unit/
-│   │   ├── ComponentTest.php
-│   │   └── MarkerManagerTest.php
-│   ├── Feature/
-│   │   └── LivewireIntegrationTest.php
-│   └── TestCase.php
-│
-├── .editorconfig
-├── .gitignore
-├── CHANGELOG.md
-├── LICENSE
-├── README.md
-├── composer.json
-└── phpunit.xml
-```
-
----
-
 ## 🛠️ Estructura del Proyecto (Monorepo)
 
 A continuación se detallan los archivos de configuración principales y sus respectivos accesos en el repositorio:
@@ -280,104 +228,13 @@ Entorno de desarrollo contenedorizado para garantizar que todos los colaboradore
 
 #### ~~Día 4: Configurar DevContainer~~
 
-#### Día 5: Migrar Código del Core
+#### ~~Día 5: Migrar Código del Core~~
 
-**En `packages/core/`** (antes livewire-lbcdev-component-map):
+#### ~~Día 6: Crear Paquete de Geometrías~~
 
-```bash
-cd packages/core
-
-# 1. Actualizar namespace
-# Buscar y reemplazar en todos los archivos PHP:
-# Lbcdev\LbcdevMapComponent → Lbcdev\LivewireMaps
-
-# 2. Renombrar clases principales
-mv src/LbcdevMapComponent.php src/Components/LivewireMap.php
-mv src/LbcdevMapServiceProvider.php src/LivewireMapsServiceProvider.php
-
-# 3. Actualizar composer.json
-# "name": "lbcdev/livewire-maps-core"
-# "autoload": { "psr-4": { "Lbcdev\\LivewireMaps\\": "src/" } }
-
-# 4. Crear branch para desarrollo
-git checkout -b refactor/v2.0
-git add .
-git commit -m "refactor: Rename to livewire-maps-core v2.0"
-git push origin refactor/v2.0
-```
-
-#### Día 6: Crear Paquete de Geometrías
-
-**En `packages/geometries/`** (nuevo):
-
-```bash
-cd packages/geometries
-
-# Crear estructura básica
-mkdir -p src/{Marker,Polyline,Polygon,Circle,Rectangle,Contracts}
-mkdir -p tests/Unit
-
-# Crear composer.json
-cat > composer.json << 'EOF'
-{
-    "name": "lbcdev/map-geometries",
-    "description": "Geometry classes for maps",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Lbcdev\\MapGeometries\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Lbcdev\\MapGeometries\\Tests\\": "tests/"
-        }
-    },
-    "require": {
-        "php": "^8.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^10.0"
-    }
-}
-EOF
-
-# Extraer clases de geometría existentes de webbingbrasil
-# (copiar y adaptar Marker, Polyline, etc.)
-
-# Commit inicial
-git add .
-git commit -m "feat: Initial geometry classes"
-git push origin main
-```
-
-#### Día 7: VS Code Workspace y Testing
-
-1. Crear `lbcdev-maps-suite.code-workspace` (configuración de arriba)
-
-2. Cerrar VS Code
-
-3. Abrir con workspace:
-
-   ```bash
-   code lbcdev-maps-suite.code-workspace
-   ```
-
-4. Reabrir en DevContainer
-
-5. Verificar que todos los paquetes se ven en el explorer
-
-6. Ejecutar tests:
-
-   ```bash
-   # En cada paquete
-   cd packages/core && composer test
-   cd ../geometries && composer test
-   # etc.
-   ```
-
----
+- Extraer clases de geometría existentes de webbingbrasil
+- (copiar y adaptar Marker, Polyline, etc.)
+- Dejar para mas adelante, por ahora solo Marker y MarkerCollection
 
 ## 📋 CHECKLIST DE MIGRACIÓN
 
@@ -399,14 +256,14 @@ git push origin main
 
 - [X] Actualizar namespaces
 - [X] Renombrar clases principales
-- [ ] Refactorizar para multi-marker
-- [ ] Actualizar tests
-- [ ] Actualizar README
+- [X] Refactorizar para multi-marker
+- [X] Actualizar tests
+- [X] Actualizar README
 
 #### Geometrías (packages/geometries)
 
-- [ ] Crear interfaces base
-- [ ] Implementar clase `Marker`
+- [X] Crear interfaces base
+- [X] Implementar clase `Marker`
 - [ ] Implementar clase `Polyline`
 - [ ] Implementar clase `Polygon`
 - [ ] Implementar clase `Circle`
@@ -459,58 +316,6 @@ git push origin main
 
 ---
 
-## 🎓 COMANDOS ÚTILES
-
-### Git Submodules
-
-```bash
-# Clonar repo con submodules
-git clone --recursive https://github.com/Luinux81/lbcdev-filament-maps-suite.git
-
-# Si ya clonaste sin --recursive
-git submodule update --init --recursive
-
-# Actualizar todos los submodules a su última versión
-git submodule update --remote --merge
-
-# Actualizar un submodule específico
-cd packages/core
-git pull origin main
-cd ../..
-git add packages/core
-git commit -m "chore: Update core to latest"
-
-# Ver estado de submodules
-git submodule status
-
-# Foreach: ejecutar comando en cada submodule
-git submodule foreach 'git status'
-git submodule foreach 'git checkout main'
-```
-
-### Composer en Monorepo
-
-```bash
-# Instalar dependencias del monorepo
-composer install
-
-# Instalar dependencias de un paquete específico
-cd packages/core && composer install
-
-# Instalar dependencias de todos los paquetes (script custom)
-for pkg in packages/*/; do
-    (cd "$pkg" && composer install)
-done
-
-# Ejecutar tests de todos los paquetes
-for pkg in packages/*/; do
-    echo "Testing $pkg..."
-    (cd "$pkg" && composer test)
-done
-```
-
----
-
 ## 🎯 RESULTADO ESPERADO
 
 Después de seguir este plan, tendrás:
@@ -550,21 +355,6 @@ Después de seguir este plan, tendrás:
 - Preparado para colaboradores
 
 ---
-
-## 💡 RECOMENDACIONES FINALES
-
-### Prioridades para las Primeras 2 Semanas
-
-1. **Setup (Día 1-7)**: Infraestructura completa funcionando
-2. **Core v2.0 (Día 8-10)**: Componente base refactorizado con multi-marker
-3. **Geometries v1.0 (Día 11-14)**: Paquete de geometrías funcional
-
-### No Te Agobies
-
-- ✅ Este es un proyecto grande, pero bien planificado
-- ✅ No necesitas hacerlo todo de golpe
-- ✅ Cada paso es independiente y testeable
-- ✅ Puedes pedir ayuda en Filament Discord
 
 ### Mantén el Enfoque
 
