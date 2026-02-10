@@ -225,7 +225,7 @@ filament-lbcdev-map-field/
 
 #### Arquitectura
 
-```
+```shell
 livewire-lbcdev-component-map/
 ├── resources/views/
 │   └── livewire/
@@ -243,7 +243,7 @@ livewire-lbcdev-component-map/
 ### Tabla de Funcionalidades
 
 | Característica | webbingbrasil | lbcdev-map-field | lbcdev-component |
-|----------------|---------------|------------------|------------------|
+| -------------- | ------------- | ---------------- | ---------------- |
 | **Compatibilidad Filament v4** | ❌ No | ✅ Sí | N/A |
 | **Campo de Formulario** | ❌ No | ✅ Sí | ✅ Base |
 | **Widget de Dashboard** | ✅ Sí | ❌ No | ❌ No |
@@ -264,7 +264,7 @@ livewire-lbcdev-component-map/
 
 ### Análisis de Dependencias
 
-```
+```shell
 ┌─────────────────────────────────┐
 │  filament-lbcdev-map-field      │
 │  (Campos Filament)              │
@@ -298,7 +298,7 @@ livewire-lbcdev-component-map/
 
 ### Estructura Ideal de Paquetes
 
-```
+```shell
 ┌─────────────────────────────────────────────────────────────┐
 │  CAPA 1: filament-maps-suite (MONOREPO O PAQUETE PRINCIPAL) │
 │  - Gestión unificada                                         │
@@ -339,7 +339,7 @@ livewire-lbcdev-component-map/
 
 ### Opción A: Monorepo (Recomendado para mantenimiento)
 
-```
+```shell
 lbcdev-filament-maps-suite/
 ├── packages/
 │   ├── core/              # livewire-maps-core
@@ -365,29 +365,6 @@ lbcdev-filament-maps-suite/
 
 - ⚠️ Requiere herramientas como `symfony/flex` o scripts custom
 - ⚠️ Curva de aprendizaje inicial
-
-### Opción B: Paquetes Separados (Tu situación actual mejorada)
-
-```
-Repositorios:
-1. lbcdev/livewire-maps-core (antes lbcdev-component-map)
-2. lbcdev/map-geometries (nuevo)
-3. lbcdev/filament-maps-fields (antes map-field)
-4. lbcdev/filament-maps-widgets (nuevo)
-```
-
-**Ventajas**:
-
-- ✅ Versionado independiente
-- ✅ Usuarios instalan solo lo que necesitan
-- ✅ Menor acoplamiento
-
-**Desventajas**:
-
-- ⚠️ Gestión de versiones más compleja
-- ⚠️ Tests entre paquetes más difíciles
-- ⚠️ Documentación dispersa
-- ⚠️ Mayor carga de mantenimiento
 
 ---
 
@@ -534,125 +511,11 @@ Repositorios:
 
 ### VS Code Workspace
 
-**Estructura de Workspace Propuesta**:
-
-```json
-{
-  "folders": [
-    {
-      "name": "🏗️ Suite Principal",
-      "path": "lbcdev-filament-maps-suite"
-    },
-    {
-      "name": "📦 Core Livewire",
-      "path": "livewire-maps-core"
-    },
-    {
-      "name": "🗺️ Geometries",
-      "path": "map-geometries"
-    },
-    {
-      "name": "📝 Filament Fields",
-      "path": "filament-maps-fields"
-    },
-    {
-      "name": "📊 Filament Widgets",
-      "path": "filament-maps-widgets"
-    },
-    {
-      "name": "🧪 Proyecto de Pruebas",
-      "path": "laravel-maps-testbed"
-    }
-  ],
-  "settings": {
-    "files.exclude": {
-      "**/vendor": true,
-      "**/node_modules": true
-    },
-    "search.exclude": {
-      "**/vendor": true,
-      "**/node_modules": true
-    }
-  },
-  "extensions": {
-    "recommendations": [
-      "bmewburn.vscode-intelephense-client",
-      "mrmlnc.vscode-blade",
-      "amiralizadeh9480.laravel-extra-intellisense",
-      "onecentlin.laravel-blade",
-      "ms-azuretools.vscode-docker",
-      "ms-vscode-remote.remote-containers"
-    ]
-  }
-}
-```
+[Ver en github](https://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/lbcdev-maps-suite.code-workspace)
 
 ### DevContainer Configuration
 
-**`.devcontainer/devcontainer.json`**:
-
-```json
-{
-  "name": "LBCDev Maps Suite",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "workspace",
-  "workspaceFolder": "/workspace",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "mrmlnc.vscode-blade",
-        "xdebug.php-debug"
-      ],
-      "settings": {
-        "php.validate.executablePath": "/usr/bin/php",
-        "intelephense.environment.phpVersion": "8.2.0"
-      }
-    }
-  },
-  "forwardPorts": [8000, 5432, 6379],
-  "postCreateCommand": "composer install && npm install",
-  "remoteUser": "vscode"
-}
-```
-
-**`.devcontainer/docker-compose.yml`**:
-
-```yaml
-version: '3.8'
-
-services:
-  workspace:
-    image: mcr.microsoft.com/devcontainers/php:8.2
-    volumes:
-      - ..:/workspace:cached
-    command: sleep infinity
-    networks:
-      - lbcdev-maps
-
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: maps_suite
-      POSTGRES_USER: lbcdev
-      POSTGRES_PASSWORD: secret
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - lbcdev-maps
-
-  redis:
-    image: redis:7-alpine
-    networks:
-      - lbcdev-maps
-
-volumes:
-  postgres-data:
-
-networks:
-  lbcdev-maps:
-    driver: bridge
-```
+[Ver en github](https://github.com/Luinux81/lbcdev-filament-maps-suite/tree/main/.devcontainer)
 
 ### Organización de Repositorios
 
@@ -691,41 +554,11 @@ git commit -m "chore: Update core to v2.0.0"
 git push
 ```
 
-#### Opción 2: Repos Independientes con Composer Path
-
-En tu proyecto de pruebas Laravel (`laravel-maps-testbed`), usar composer local:
-
-```json
-{
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../livewire-maps-core"
-    },
-    {
-      "type": "path",
-      "url": "../map-geometries"
-    },
-    {
-      "type": "path",
-      "url": "../filament-maps-fields"
-    }
-  ],
-  "require": {
-    "lbcdev/livewire-maps-core": "@dev",
-    "lbcdev/map-geometries": "@dev",
-    "lbcdev/filament-maps-fields": "@dev"
-  }
-}
-```
-
----
-
 ## 🧪 ESTRATEGIA DE TESTING
 
 ### Test Suite Recomendada
 
-```
+```shell
 tests/
 ├── Unit/
 │   ├── Geometries/
@@ -921,7 +754,7 @@ jobs:
 
 ### Para el Paquete Principal (filament-maps-fields v2.0)
 
-```
+```shell
 lbcdev/filament-maps-fields/
 ├── .devcontainer/
 │   ├── devcontainer.json

@@ -21,7 +21,7 @@ Basado en la auditoría completa, te propongo una **arquitectura híbrida con Mo
 
 ### Visión General
 
-```
+```shell
 ┌─────────────────────────────────────────────────────────────┐
 │                 GITHUB REPOSITORIES                          │
 ├─────────────────────────────────────────────────────────────┤
@@ -107,7 +107,7 @@ Basado en la auditoría completa, te propongo una **arquitectura híbrida con Mo
 
 ### Repo Principal: lbcdev-filament-maps-suite
 
-```
+```shell
 lbcdev-filament-maps-suite/
 │
 ├── .devcontainer/
@@ -193,7 +193,7 @@ lbcdev-filament-maps-suite/
 
 ### Submodule Ejemplo: livewire-maps-core
 
-```
+```shell
 livewire-maps-core/                # Repo independiente en GitHub
 │
 ├── .github/
@@ -243,429 +243,28 @@ livewire-maps-core/                # Repo independiente en GitHub
 
 ---
 
-## 🛠️ CONFIGURACIONES TÉCNICAS
+## 🛠️ Estructura del Proyecto (Monorepo)
 
-### 1. composer.json del Monorepo (Meta-package)
+A continuación se detallan los archivos de configuración principales y sus respectivos accesos en el repositorio:
 
-**lbcdev-filament-maps-suite/composer.json**:
+### 📄 Archivos de Configuración Core
 
-```json
-{
-    "name": "lbcdev/filament-maps-suite",
-    "description": "Complete maps solution for FilamentPHP - Fields, Widgets, and more",
-    "keywords": [
-        "laravel",
-        "livewire",
-        "filament",
-        "maps",
-        "leaflet",
-        "filamentphp"
-    ],
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Luinux81",
-            "email": "tu-email@example.com"
-        }
-    ],
-    "require": {
-        "php": "^8.1",
-        "lbcdev/livewire-maps-core": "^2.0",
-        "lbcdev/map-geometries": "^1.0",
-        "lbcdev/filament-maps-fields": "^2.0",
-        "lbcdev/filament-maps-widgets": "^1.0"
-    },
-    "require-dev": {
-        "orchestra/testbench": "^8.0|^9.0",
-        "pestphp/pest": "^2.0",
-        "phpunit/phpunit": "^10.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Lbcdev\\FilamentMapsSuite\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Lbcdev\\FilamentMapsSuite\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Lbcdev\\LivewireMaps\\LivewireMapsServiceProvider",
-                "Lbcdev\\MapGeometries\\MapGeometriesServiceProvider",
-                "Lbcdev\\FilamentMapsFields\\FilamentMapsFieldsServiceProvider",
-                "Lbcdev\\FilamentMapsWidgets\\FilamentMapsWidgetsServiceProvider"
-            ]
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
-}
-```
+| Componente | Descripción | Enlace al Archivo |
+| --- | --- | --- |
+| **composer.json** | Definición del Meta-package y dependencias. | [Ver en Github](https://www.google.com/search?q=%5Bhttps://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/composer.json%5D(https://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/composer.json)) |
+| **Git Submodules** | Configuración de los submódulos del repositorio. | [Ver en Github](https://www.google.com/search?q=%5Bhttps://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/.gitmodules%5D(https://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/.gitmodules)) |
 
-### 2. .gitmodules (Git Submodules Config)
+---
 
-**lbcdev-filament-maps-suite/.gitmodules**:
+### 💻 Entorno de Desarrollo
 
-```ini
-[submodule "packages/core"]
-    path = packages/core
-    url = https://github.com/Luinux81/livewire-maps-core.git
-    branch = main
+#### **VS Code Workspace**
 
-[submodule "packages/geometries"]
-    path = packages/geometries
-    url = https://github.com/Luinux81/map-geometries.git
-    branch = main
+Configuración personalizada para el espacio de trabajo en VS Code, optimizando la gestión del monorepo. 💡 [Ver en Github](https://github.com/Luinux81/lbcdev-filament-maps-suite/blob/main/lbcdev-maps-suite.code-workspace)
 
-[submodule "packages/fields"]
-    path = packages/fields
-    url = https://github.com/Luinux81/filament-maps-fields.git
-    branch = main
+#### **DevContainer Configuration**
 
-[submodule "packages/widgets"]
-    path = packages/widgets
-    url = https://github.com/Luinux81/filament-maps-widgets.git
-    branch = main
-```
-
-### 3. VS Code Workspace
-
-**lbcdev-maps-suite.code-workspace**:
-
-```json
-{
-  "folders": [
-    {
-      "name": "🏗️ SUITE (Principal)",
-      "path": "."
-    },
-    {
-      "name": "📦 Core",
-      "path": "packages/core"
-    },
-    {
-      "name": "🗺️ Geometries",
-      "path": "packages/geometries"
-    },
-    {
-      "name": "📝 Fields",
-      "path": "packages/fields"
-    },
-    {
-      "name": "📊 Widgets",
-      "path": "packages/widgets"
-    }
-  ],
-  "settings": {
-    "files.exclude": {
-      "**/vendor": true,
-      "**/node_modules": true,
-      "**/.git": false
-    },
-    "search.exclude": {
-      "**/vendor": true,
-      "**/node_modules": true
-    },
-    "phpunit.paths": {
-      "${workspaceFolder:Core}/vendor/bin/phpunit": "packages/core",
-      "${workspaceFolder:Geometries}/vendor/bin/phpunit": "packages/geometries",
-      "${workspaceFolder:Fields}/vendor/bin/phpunit": "packages/fields",
-      "${workspaceFolder:Widgets}/vendor/bin/phpunit": "packages/widgets"
-    },
-    "intelephense.environment.includePaths": [
-      "packages/core/src",
-      "packages/geometries/src",
-      "packages/fields/src",
-      "packages/widgets/src"
-    ],
-    "[php]": {
-      "editor.formatOnSave": true,
-      "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
-    }
-  },
-  "extensions": {
-    "recommendations": [
-      "bmewburn.vscode-intelephense-client",
-      "mrmlnc.vscode-blade",
-      "onecentlin.laravel-blade",
-      "amiralizadeh9480.laravel-extra-intellisense",
-      "ms-azuretools.vscode-docker",
-      "ms-vscode-remote.remote-containers",
-      "eamodio.gitlens",
-      "editorconfig.editorconfig"
-    ]
-  },
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Listen for Xdebug (Core)",
-        "type": "php",
-        "request": "launch",
-        "port": 9003,
-        "pathMappings": {
-          "/workspace/packages/core": "${workspaceFolder:Core}"
-        }
-      },
-      {
-        "name": "Listen for Xdebug (Fields)",
-        "type": "php",
-        "request": "launch",
-        "port": 9003,
-        "pathMappings": {
-          "/workspace/packages/fields": "${workspaceFolder:Fields}"
-        }
-      }
-    ]
-  }
-}
-```
-
-### 4. DevContainer Configuration
-
-**.devcontainer/devcontainer.json**:
-
-```json
-{
-  "name": "LBCDev Maps Suite Development",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "workspace",
-  "workspaceFolder": "/workspace",
-  
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "bmewburn.vscode-intelephense-client",
-        "mrmlnc.vscode-blade",
-        "onecentlin.laravel-blade",
-        "amiralizadeh9480.laravel-extra-intellisense",
-        "eamodio.gitlens",
-        "ms-azuretools.vscode-docker",
-        "editorconfig.editorconfig",
-        "xdebug.php-debug"
-      ],
-      "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "php.suggest.basic": false,
-        "intelephense.environment.phpVersion": "8.2.0",
-        "intelephense.files.maxSize": 5000000,
-        "[php]": {
-          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
-          "editor.formatOnSave": true
-        }
-      }
-    }
-  },
-  
-  "forwardPorts": [8000, 5432, 6379, 8080],
-  "portsAttributes": {
-    "8000": {
-      "label": "Laravel App",
-      "onAutoForward": "notify"
-    },
-    "8080": {
-      "label": "Docs (VitePress)",
-      "onAutoForward": "openBrowser"
-    }
-  },
-  
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "postStartCommand": "bash .devcontainer/post-start.sh",
-  
-  "remoteUser": "vscode",
-  
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {}
-  }
-}
-```
-
-**.devcontainer/docker-compose.yml**:
-
-```yaml
-version: '3.8'
-
-services:
-  workspace:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    
-    volumes:
-      - ..:/workspace:cached
-      - ~/.ssh:/home/vscode/.ssh:ro  # Para Git con SSH
-    
-    command: sleep infinity
-    
-    environment:
-      - DB_CONNECTION=pgsql
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_DATABASE=lbcdev_maps
-      - DB_USERNAME=lbcdev
-      - DB_PASSWORD=secret
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    
-    networks:
-      - lbcdev-maps
-    
-    depends_on:
-      - postgres
-      - redis
-
-  postgres:
-    image: postgres:15-alpine
-    restart: unless-stopped
-    
-    environment:
-      POSTGRES_DB: lbcdev_maps
-      POSTGRES_USER: lbcdev
-      POSTGRES_PASSWORD: secret
-    
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    
-    networks:
-      - lbcdev-maps
-    
-    ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:7-alpine
-    restart: unless-stopped
-    
-    volumes:
-      - redis-data:/data
-    
-    networks:
-      - lbcdev-maps
-    
-    ports:
-      - "6379:6379"
-
-  docs:
-    image: node:18-alpine
-    working_dir: /docs
-    
-    volumes:
-      - ../docs:/docs:cached
-    
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
-    
-    networks:
-      - lbcdev-maps
-    
-    ports:
-      - "8080:8080"
-
-volumes:
-  postgres-data:
-  redis-data:
-
-networks:
-  lbcdev-maps:
-    driver: bridge
-```
-
-**.devcontainer/Dockerfile**:
-
-```dockerfile
-FROM mcr.microsoft.com/devcontainers/php:1-8.2
-
-# Instalar extensiones PHP
-RUN install-php-extensions \
-    pdo_pgsql \
-    pgsql \
-    redis \
-    xdebug \
-    zip \
-    gd \
-    intl \
-    bcmath
-
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Instalar Node.js y NPM
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
-
-# Configurar Xdebug
-RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-# Crear usuario no-root
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-USER $USERNAME
-```
-
-**.devcontainer/post-create.sh**:
-
-```bash
-#!/bin/bash
-
-echo "🚀 Inicializando workspace..."
-
-# Inicializar submodules
-echo "📦 Inicializando git submodules..."
-git submodule update --init --recursive
-
-# Instalar dependencias del monorepo
-echo "📚 Instalando dependencias de composer (monorepo)..."
-composer install
-
-# Instalar dependencias de cada paquete
-for pkg in packages/*/; do
-    if [ -f "$pkg/composer.json" ]; then
-        echo "📦 Instalando dependencias de $pkg..."
-        (cd "$pkg" && composer install)
-    fi
-done
-
-# Instalar dependencias de docs
-if [ -f "docs/package.json" ]; then
-    echo "📖 Instalando dependencias de documentación..."
-    (cd docs && npm install)
-fi
-
-# Configurar Git
-echo "🔧 Configurando Git..."
-git config --global --add safe.directory /workspace
-git config --global --add safe.directory '/workspace/*'
-
-echo "✅ ¡Workspace listo!"
-```
-
-**.devcontainer/post-start.sh**:
-
-```bash
-#!/bin/bash
-
-echo "🔄 Post-start commands..."
-
-# Actualizar submodules (por si hay cambios remotos)
-git submodule update --remote --merge
-
-echo "✅ Container iniciado correctamente"
-```
+Entorno de desarrollo contenedorizado para garantizar que todos los colaboradores tengan las mismas dependencias (PHP, Extensiones, etc.). 💡 [Ver en Github](https://github.com/Luinux81/lbcdev-filament-maps-suite/tree/main/.devcontainer)
 
 ---
 
@@ -673,89 +272,13 @@ echo "✅ Container iniciado correctamente"
 
 ### Semana 1: Setup Inicial (5-7 días)
 
-#### Día 1: Preparación
+#### ~~Día 1: Preparación~~
 
-**Mañana**:
+#### ~~Día 2: Crear Estructura de Repos~~
 
-1. ✅ Leer completamente esta propuesta
-2. ✅ Decidir nombres finales de repos
-3. ✅ Crear checklist detallada en GitHub Issues
+#### ~~Día 3: Setup del Monorepo~~
 
-**Tarde**:
-4. ✅ Hacer backup de tus repos actuales
-5. ✅ Crear branch `migration-to-suite` en repos existentes
-6. ✅ Planificar migración de datos/issues
-
-#### Día 2: Crear Estructura de Repos
-
-**Repos a Crear en GitHub**:
-
-```bash
-# 1. Repo principal (nuevo)
-gh repo create Luinux81/lbcdev-filament-maps-suite \
-    --public \
-    --description "Complete maps solution for FilamentPHP" \
-    --license MIT
-
-# 2. Renombrar repo existente
-# GitHub UI: Settings → General → Repository name
-# livewire-lbcdev-component-map → livewire-maps-core
-
-# 3. Crear nuevo repo para geometries
-gh repo create Luinux81/map-geometries \
-    --public \
-    --description "Geometry classes for maps: Markers, Polylines, Polygons" \
-    --license MIT
-
-# 4. Mantener repo existente
-# filament-lbcdev-map-field → OK (o renombrar a filament-maps-fields)
-
-# 5. Crear nuevo repo para widgets
-gh repo create Luinux81/filament-maps-widgets \
-    --public \
-    --description "Map widgets for Filament dashboards" \
-    --license MIT
-```
-
-#### Día 3: Setup del Monorepo
-
-```bash
-# Clonar el repo principal recién creado
-git clone git@github.com:Luinux81/lbcdev-filament-maps-suite.git
-cd lbcdev-filament-maps-suite
-
-# Crear estructura de carpetas
-mkdir -p .devcontainer .github/workflows .vscode docs examples tests packages
-
-# Añadir submodules
-git submodule add git@github.com:Luinux81/livewire-maps-core.git packages/core
-git submodule add git@github.com:Luinux81/map-geometries.git packages/geometries
-git submodule add git@github.com:Luinux81/filament-maps-fields.git packages/fields
-git submodule add git@github.com:Luinux81/filament-maps-widgets.git packages/widgets
-
-# Commit
-git commit -m "chore: Add submodules"
-git push origin main
-```
-
-#### Día 4: Configurar DevContainer
-
-1. Copiar configuraciones de arriba:
-   - `.devcontainer/devcontainer.json`
-   - `.devcontainer/docker-compose.yml`
-   - `.devcontainer/Dockerfile`
-   - Scripts post-create y post-start
-
-2. Hacer ejecutables los scripts:
-
-   ```bash
-   chmod +x .devcontainer/*.sh
-   ```
-
-3. Testear DevContainer:
-   - Abrir VS Code
-   - Command Palette: "Dev Containers: Reopen in Container"
-   - Esperar a que construya (5-10 min primera vez)
+#### ~~Día 4: Configurar DevContainer~~
 
 #### Día 5: Migrar Código del Core
 
@@ -868,18 +391,17 @@ git push origin main
 - [X] Configurar Git submodules
 - [X] Crear DevContainer
 - [X] Crear VS Code Workspace
-- [ ] Configurar CI/CD básico
+- [X] Configurar CI/CD básico
 
 ### Migración de Código ✅
 
 #### Core (packages/core)
 
-- [ ] Actualizar namespaces
-- [ ] Renombrar clases principales
+- [X] Actualizar namespaces
+- [X] Renombrar clases principales
 - [ ] Refactorizar para multi-marker
 - [ ] Actualizar tests
 - [ ] Actualizar README
-- [ ] Tag `v2.0.0-beta.1`
 
 #### Geometrías (packages/geometries)
 
@@ -987,19 +509,6 @@ for pkg in packages/*/; do
 done
 ```
 
-### DevContainer
-
-```bash
-# Reconstruir DevContainer (si cambias Dockerfile)
-# Command Palette: "Dev Containers: Rebuild Container"
-
-# Logs del DevContainer
-# Command Palette: "Dev Containers: Show Container Log"
-
-# Abrir terminal en el container
-# Terminal → New Terminal (automático)
-```
-
 ---
 
 ## 🎯 RESULTADO ESPERADO
@@ -1063,14 +572,3 @@ Después de seguir este plan, tendrás:
 - 🎯 Segundo: funcionalidad core
 - 🎯 Tercero: features avanzadas
 - 🎯 Cuarto: documentación y pulido
-
----
-
-## 📞 PRÓXIMOS PASOS
-
-1. **Lee ambos documentos** (auditoría + este)
-2. **Toma una decisión**: ¿Seguir esta arquitectura?
-3. **Si es sí**: Comienza con el Día 1 del plan
-4. **Si tienes dudas**: Pregúntame lo que necesites
-
-¡Estoy aquí para ayudarte en cada paso! 🚀
