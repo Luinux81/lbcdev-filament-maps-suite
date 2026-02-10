@@ -37,3 +37,7 @@ alias tc='php artisan test --coverage'
 
 # Crear webapp shortcut
 alias mk-webapp='/usr/local/bin/create-webapp'
+
+
+# LBCDev Scripts
+alias showfilestoclipboard='/opt/luinux-scripts/scripts/filesystem/show-selected-files.sh | /opt/luinux-scripts/scripts/utils/set-clipboard.sh'

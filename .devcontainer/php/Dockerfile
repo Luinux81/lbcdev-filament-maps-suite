@@ -14,6 +14,10 @@ RUN apk update && apk add --no-cache \
     sqlite \
     nodejs \
     npm \
+    pnpm \
+    findutils \
+    fzf \
+    xclip \
     autoconf \
     g++ \
     make \
@@ -29,7 +33,7 @@ RUN apk update && apk add --no-cache \
     && npm install -g pnpm \
     && rm -rf /var/cache/apk/*
 
-# 2. Instalación de extensiones PHP (Compilación manual)
+# 2. Instalación de extensiones PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
@@ -43,7 +47,6 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     opcache
 
 # 3. Instalación de Xdebug y Redis vía PECL
-# Instalamos $PHPIZE_DEPS temporalmente para la compilación
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && pecl install xdebug redis \
     && docker-php-ext-enable xdebug redis \
@@ -60,12 +63,18 @@ RUN addgroup -g $GID dev \
     && chown -R dev:dev /workspace /home/dev/.ssh \
     && chmod 700 /home/dev/.ssh
 
+# --- NUEVA SECCIÓN: SCRIPTS EXTERNOS (Luinux81) ---
+RUN git clone https://github.com/Luinux81/bash-scripts.git /opt/luinux-scripts \
+    && find /opt/luinux-scripts -maxdepth 5 -name "*.sh" -exec chmod +x {} + \
+    && find /opt/luinux-scripts -maxdepth 5 -name "*.sh" -exec ln -s {} /usr/local/bin/ \;
+# --------------------------------------------------
+
 # 6. Copiar configuraciones
 COPY php/config/php-fpm.conf /usr/local/etc/php-fpm.d/zz-custom.conf
 COPY php/config/php.ini /usr/local/etc/php/conf.d/custom.ini
 COPY php/config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-# 7. Copiar scripts
+# 7. Copiar scripts locales y configuración Bash
 COPY php/scripts/fix-ssh-permissions.sh /usr/local/bin/fix-ssh-permissions
 COPY php/scripts/setup-env.sh /usr/local/bin/setup-env
 COPY php/scripts/create-webapp.sh /usr/local/bin/create-webapp
@@ -77,8 +86,6 @@ RUN chmod +x /usr/local/bin/fix-ssh-permissions \
     && chmod +x /usr/local/bin/create-webapp \
     && chmod +x /usr/local/bin/xdebug-control.sh \
     && chmod +x /etc/profile.d/bash_aliases.sh \
-    # MANTENER ESTE COMENTARIO
-    # Esta parte es para que el usuario dev tenga permisos para editar el archivo .bashrc y ademas poder usar los scripts de xdebug-control.sh
     && touch /home/dev/.bashrc \
     && echo 'source /etc/profile.d/bash_aliases.sh' >> /home/dev/.bashrc \
     && chown dev:dev /home/dev/.bashrc \
@@ -94,6 +101,5 @@ RUN echo '#!/bin/sh' > /usr/local/bin/docker-entrypoint.sh \
     && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 9000
-
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD []
