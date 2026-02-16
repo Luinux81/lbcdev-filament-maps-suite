@@ -1,4 +1,4 @@
-# Checklist de Progreso - [10 de febrero de 2026]
+# Checklist de Progreso - [14 de febrero de 2026]
 
 ## ✅ Completado
 
@@ -46,12 +46,56 @@
 
 ### Paquete Fields (`filament-maps-fields`)
 
-- ✅ ServiceProvider creado
+- ✅ ServiceProvider creado con auto-discovery
 - ✅ Estructura de directorios Forms/Infolists
+- ✅ Componente `MapField` para Forms
+  - Modo JSON (recomendado) y modo legacy
+  - Validación integrada con Filament
+  - Soporte para notación de punto
+  - Integración con LivewireMap del Core
+- ✅ Componente `MapBoundsField` para Forms
+  - Gestión de bounds del mapa
+  - Modos JSON y legacy
+  - Validación completa
+- ✅ Componente `MapEntry` para Infolists
+  - Visualización de ubicaciones en infolists
+  - Modo solo lectura
+- ✅ Componente `MapBoundsEntry` para Infolists
+  - Visualización de bounds en infolists
+- ✅ Tests completos (11 archivos de tests)
+  - MapFieldTest, MapFieldJsonModeTest, MapFieldJsonNotationTest
+  - MapFieldRequiredValidationTest, MapFieldBackwardCompatibilityTest
+  - MapBoundsFieldTest, MapBoundsFieldJsonModeTest, MapBoundsFieldJsonNotationTest
+  - MapBoundsFieldRequiredValidationTest
+  - MapEntryTest, MapBoundsEntryTest
+- ✅ README completo (683 líneas)
+  - Instalación y configuración
+  - Ejemplos de uso (Forms e Infolists)
+  - API completa documentada
+  - Guía de migración
 
 ### Paquete Widgets (`filament-maps-widgets`)
 
 - ✅ Repositorio inicializado
+- ✅ FASE 1: Setup Inicial Completado
+  - ServiceProvider con auto-discovery
+  - Configuración completa (`config/filament-maps-widgets.php`)
+    - Centro del mapa por defecto (configurable vía env)
+    - Zoom por defecto
+    - Altura de widgets
+    - Opciones del mapa (Leaflet)
+    - Posición de acciones
+  - Estructura de directorios preparada
+    - `src/Widgets/` (para Fase 2)
+    - `src/Actions/` (para Fase 3)
+    - `src/Contracts/` (para Fase 2)
+    - `src/Concerns/` (para Fase 2)
+    - `resources/views/` (para Fase 2)
+  - TestCase configurado con Orchestra Testbench
+  - README inicial con ejemplos
+  - Documentación de planificación
+    - `packages/widgets/docs/FASE_1_COMPLETADA.md`
+    - `packages/widgets/docs/MIGRACION_PAQUETE_WIDGETS.md`
 
 ## 🚧 En Progreso
 
@@ -59,11 +103,14 @@ Ninguna tarea actualmente en progreso.
 
 ## 📋 Próximo Paso
 
-**Implementar componentes Filament**:
+**Implementar MapWidget base (Widgets Fase 2)**:
 
-- Crear `MapField` para Forms en paquete Fields
-- Crear `MapEntry` para Infolists en paquete Fields
-- Tests de integración con Filament
+- Crear clase `MapWidget` en `src/Widgets/`
+- Crear vista `map-widget.blade.php`
+- Integrar con `LivewireMap` del Core
+- Crear contracts: `HasActions`, `HasMapConfiguration`
+- Crear concerns: `InteractsWithMarkers`, `InteractsWithMapOptions`
+- Tests unitarios del `MapWidget`
 
 ## 📋 Por Hacer
 
@@ -83,17 +130,26 @@ Ninguna tarea actualmente en progreso.
 
 ### Fields
 
-- [ ] Componente `MapField` para Forms
-- [ ] Componente `MapEntry` para Infolists
-- [ ] Tests de integración con Filament
-- [ ] Documentación
+- [x] Componente `MapField` para Forms
+- [x] Componente `MapBoundsField` para Forms
+- [x] Componente `MapEntry` para Infolists
+- [x] Componente `MapBoundsEntry` para Infolists
+- [x] Tests completos (11 archivos)
+- [x] Documentación (README 683 líneas)
 
 ### Widgets
 
-- [ ] Estructura base del paquete
-- [ ] Componente `MapWidget`
-- [ ] Tests
-- [ ] Documentación
+- [x] Estructura base del paquete (Fase 1)
+- [x] ServiceProvider con auto-discovery
+- [x] Configuración completa
+- [x] TestCase configurado
+- [x] Documentación de planificación
+- [ ] Componente `MapWidget` base (Fase 2)
+- [ ] Vista `map-widget.blade.php` (Fase 2)
+- [ ] Contracts y Concerns (Fase 2)
+- [ ] Sistema de Actions (Fase 3)
+- [ ] Tests unitarios (Fase 2+)
+- [ ] README completo con ejemplos (Fase 3+)
 
 ### Monorepo
 

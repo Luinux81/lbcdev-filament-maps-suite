@@ -1,10 +1,10 @@
-# Estado Actual del Proyecto - [10 de febrero de 2026]
+# Estado Actual del Proyecto - [14 de febrero de 2026]
 
 ## 📊 Resumen Ejecutivo
 
-**Monorepo**: `lbcdev-filament-maps-suite` (rama `refactor`)
+**Monorepo**: `lbcdev-filament-maps-suite` (rama `dev`)
 **Arquitectura**: Monorepo con 4 paquetes como git submodules
-**Estado**: Core y Geometries completados con tests - Listos para Fields/Widgets
+**Estado**: Core, Geometries y Fields completados - Widgets en Fase 1
 
 ## 📁 Documentos Clave
 
@@ -35,13 +35,14 @@
    - Estado: ✅ **COMPLETO** - `Marker` + `MarkerCollection` + 36 tests
 
 3. **filament-maps-fields** → `packages/fields/`
-   - Commit: `f2dbca2` (rama `main`)
+   - Commit: actualizado (rama `main`)
    - Namespace: `LBCDev\FilamentMapsFields`
-   - Estado: ⚠️ Solo ServiceProvider, sin componentes
+   - Estado: ✅ **COMPLETO** - MapField + MapBoundsField + Entries + 11 tests
 
 4. **filament-maps-widgets** → `packages/widgets/`
-   - Commit: `73455df` (rama `main`)
-   - Estado: ⚠️ Solo README, sin código
+   - Commit: actualizado (rama `main`)
+   - Namespace: `LBCDev\FilamentMapsWidgets`
+   - Estado: 🚧 **FASE 1 COMPLETA** - ServiceProvider + config + estructura
 
 ## 🏗️ Estructura de Código Actual
 
@@ -100,40 +101,91 @@ tests/Unit/
 
 ```shell
 src/
-├── Forms/Components/             ⚠️ Vacío
-├── Infolists/Entries/            ⚠️ Vacío
-└── FilamentMapFieldsServiceProvider.php
+├── Forms/Components/
+│   ├── MapField.php              ✅ Campo de mapa para Forms
+│   └── MapBoundsField.php        ✅ Campo de bounds para Forms
+├── Infolists/Entries/
+│   ├── MapEntry.php              ✅ Entry de mapa para Infolists
+│   └── MapBoundsEntry.php        ✅ Entry de bounds para Infolists
+└── FilamentMapsFieldsServiceProvider.php
+
+tests/Unit/
+├── MapFieldTest.php              ✅ Tests completos
+├── MapFieldJsonModeTest.php
+├── MapFieldJsonNotationTest.php
+├── MapFieldRequiredValidationTest.php
+├── MapFieldBackwardCompatibilityTest.php
+├── MapBoundsFieldTest.php
+├── MapBoundsFieldJsonModeTest.php
+├── MapBoundsFieldJsonNotationTest.php
+├── MapBoundsFieldRequiredValidationTest.php
+├── MapEntryTest.php
+└── MapBoundsEntryTest.php        ✅ 11 archivos de tests
+
+README.md                         ✅ 683 líneas - Documentación completa
 ```
+
+**Funcionalidades**:
+
+- Modo JSON y modo legacy para coordenadas
+- Validación integrada con Filament
+- Soporte para notación de punto (dot notation)
+- MapField y MapBoundsField para formularios
+- MapEntry y MapBoundsEntry para infolists
+- Integración con LivewireMap del Core
+- Tests exhaustivos (11 archivos)
 
 ### Widgets (`packages/widgets/`)
 
 ```shell
-⚠️ Sin estructura de código
+src/
+├── FilamentMapsWidgetsServiceProvider.php  ✅
+├── Widgets/                      📁 (preparado para Fase 2)
+├── Actions/                      📁 (preparado para Fase 3)
+├── Contracts/                    📁 (preparado para Fase 2)
+└── Concerns/                     📁 (preparado para Fase 2)
+
+config/
+└── filament-maps-widgets.php     ✅ Configuración completa
+
+tests/
+└── TestCase.php                  ✅ Setup de testing
+
+README.md                         ✅ Documentación inicial
 ```
+
+**Estado Fase 1**:
+
+- ServiceProvider con auto-discovery
+- Configuración completa (centro, zoom, opciones)
+- Estructura de directorios preparada
+- TestCase configurado
+- Documentación de planificación en `/docs`
 
 ## 🔄 Últimos Cambios
 
-- **Commit actual**: `9d128fa` - Actualización de paquetes
-- **Rama**: `refactor`
+- **Rama**: `dev`
 - ✅ Core: `LivewireMap` completo con 13 tests
 - ✅ Geometries: `Marker` y `MarkerCollection` completos con 36 tests
+- ✅ Fields: 4 componentes (MapField, MapBoundsField, MapEntry, MapBoundsEntry) + 11 tests
+- ✅ Widgets: Fase 1 completada (ServiceProvider, config, estructura)
 - Configuración DevContainer y Xdebug operativos
 
 ## 📊 Estadísticas
 
-| Paquete    | Clases | Tests | Código | Tests | Vistas | Config | Docs | Estado       |
-|------------|--------|-------|--------|-------|--------|--------|------|--------------|
-| Core       | 1      | 13    | 243    | 265   | 205    | 49     | 525  | ✅ Completo  |
-| Geometries | 2      | 36    | 454    | 383   | -      | -      | -    | ✅ Completo  |
-| Fields     | 0      | 0     | -      | -     | -      | -      | -    | ⚠️ Pendiente |
-| Widgets    | 0      | 0     | -      | -     | -      | -      | -    | ⚠️ Pendiente |
+| Paquete    | Componentes | Tests | Código | Tests | Vistas | Config | Docs | Estado          |
+|------------|-------------|-------|--------|-------|--------|--------|------|-----------------|
+| Core       | 1           | 13    | 243    | 265   | 205    | 49     | 525  | ✅ Completo     |
+| Geometries | 2           | 36    | 454    | 383   | -      | -      | -    | ✅ Completo     |
+| Fields     | 4           | 11    | ~800   | ~600  | -      | -      | 683  | ✅ Completo     |
+| Widgets    | 1 (SP)      | 0     | ~100   | -     | -      | ~80    | ~200 | 🚧 Fase 1       |
 
-**Totales**: 3 clases, 49 tests, 697 líneas código, 648 líneas tests, 205 líneas vistas, 525 líneas docs
+**Totales**: 8 componentes, 60 tests, ~1597 líneas código, ~1248 líneas tests, 205 líneas vistas, ~1408 líneas docs
 
 ## 📋 Próximos Pasos
 
-1. Implementar `MapField` en paquete Fields
-2. Implementar `MapEntry` para Infolists
-3. Tests de integración con Filament
+1. Implementar `MapWidget` base en paquete Widgets (Fase 2)
+2. Sistema de Actions para Widgets (Fase 3)
+3. Migración de widgets existentes de la aplicación
 
-Ver `/docs/03-CHECKLIST_PROGRESO.md` para detalles.
+Ver `/docs/03-CHECKLIST_PROGRESO.md` y `/packages/widgets/docs/` para detalles.

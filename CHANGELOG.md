@@ -65,18 +65,94 @@ Todos los cambios notables del monorepo `lbcdev-filament-maps-suite`.
   - Métodos: `toArray()`, `toJson()`, `render()`
   - Tests completos (17 tests, 227 líneas)
 
-#### Fields (`filament-maps-fields`) - ⚠️ EN DESARROLLO
+#### Fields (`filament-maps-fields`) - ✅ COMPLETO
 
 **Added**:
 
-- `FilamentMapFieldsServiceProvider`
+- `FilamentMapsFieldsServiceProvider` con auto-discovery
 - Estructura de directorios: `Forms/Components`, `Infolists/Entries`
+- Componente `MapField` para Forms
+  - Modo JSON (recomendado): guarda coordenadas como `{latitude: X, longitude: Y}`
+  - Modo legacy: campos separados para compatibilidad
+  - Validación integrada con Filament
+  - Soporte para notación de punto (dot notation)
+  - Integración con `LivewireMap` del Core
+  - Click para seleccionar ubicación
+  - Pegar coordenadas desde portapapeles
+  - Modo solo lectura
+- Componente `MapBoundsField` para Forms
+  - Gestión de bounds del mapa (northEast, southWest)
+  - Modos JSON y legacy
+  - Validación completa
+  - Integración con LivewireMap
+- Componente `MapEntry` para Infolists
+  - Visualización de ubicaciones en infolists
+  - Modo solo lectura
+  - Soporte para modos JSON y legacy
+- Componente `MapBoundsEntry` para Infolists
+  - Visualización de bounds en infolists
+  - Modo solo lectura
+- Tests completos (11 archivos de tests)
+  - `MapFieldTest.php` - Tests básicos del campo
+  - `MapFieldJsonModeTest.php` - Tests modo JSON
+  - `MapFieldJsonNotationTest.php` - Tests notación de punto
+  - `MapFieldRequiredValidationTest.php` - Tests validación required
+  - `MapFieldBackwardCompatibilityTest.php` - Tests compatibilidad
+  - `MapBoundsFieldTest.php` - Tests básicos bounds
+  - `MapBoundsFieldJsonModeTest.php` - Tests modo JSON bounds
+  - `MapBoundsFieldJsonNotationTest.php` - Tests notación punto bounds
+  - `MapBoundsFieldRequiredValidationTest.php` - Tests validación bounds
+  - `MapEntryTest.php` - Tests entry de mapa
+  - `MapBoundsEntryTest.php` - Tests entry de bounds
+- README completo (683 líneas)
+  - Instalación y configuración
+  - Ejemplos de uso (Forms e Infolists)
+  - API completa documentada
+  - Guía de migración y troubleshooting
+- Archivos adicionales de documentación
+  - `EXAMPLES.md` - Ejemplos de uso
+  - `TROUBLESHOOTING.md` - Solución de problemas
 
-#### Widgets (`filament-maps-widgets`) - ⚠️ PENDIENTE
+#### Widgets (`filament-maps-widgets`) - 🚧 FASE 1 COMPLETA
 
 **Added**:
 
 - Repositorio inicializado
+- `FilamentMapsWidgetsServiceProvider` con auto-discovery
+  - Usa `spatie/laravel-package-tools` para configuración simplificada
+  - Carga vistas automáticamente
+  - Publica configuración
+  - Preparado para assets futuros
+- Archivo de configuración `config/filament-maps-widgets.php`
+  - Centro del mapa por defecto (configurable vía env)
+  - Zoom por defecto
+  - Altura de widgets
+  - Opciones del mapa (Leaflet): scrollWheelZoom, dragging, etc.
+  - Posición de acciones
+- Estructura de directorios preparada
+  - `src/Widgets/` (para Fase 2)
+  - `src/Actions/` (para Fase 3)
+  - `src/Contracts/` (para Fase 2)
+  - `src/Concerns/` (para Fase 2)
+  - `resources/views/` (para Fase 2)
+- `tests/TestCase.php` configurado
+  - Hereda de `Orchestra\Testbench\TestCase`
+  - Carga todos los ServiceProviders necesarios (Livewire, Filament, Core, Widgets)
+  - Configura entorno de testing
+- `composer.json` actualizado
+  - Metadata completa (keywords, homepage, license, authors)
+  - Scripts útiles: `test`, `test-coverage`
+  - Dependencias de desarrollo (PHPUnit, Orchestra Testbench)
+  - Repositorios locales para desarrollo
+- `phpunit.xml` configurado
+  - PHPUnit 10+ compatible
+  - Coverage reports
+  - Variables de entorno para testing
+- `.gitignore` configurado
+- README inicial con ejemplos básicos
+- Documentación de planificación
+  - `packages/widgets/docs/FASE_1_COMPLETADA.md` - Resumen Fase 1
+  - `packages/widgets/docs/MIGRACION_PAQUETE_WIDGETS.md` - Plan de migración completo
 
 ---
 
